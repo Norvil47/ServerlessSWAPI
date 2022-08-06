@@ -1,0 +1,61 @@
+service: serverlessswapi
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource:
+            - arn:aws:dynamodb:us-east-1:094597431274:table/Tabla1
+
+plugins:
+  - serverless-auto-swagger
+  - Serverless-offline
+
+functions:
+  crearRegistro:
+    handler: src/crearRegistro.crearRegistro
+    events:
+      - http:
+          method: POST
+          path: "/api/personas"
+
+  leerRegistros:
+    handler: src/leerRegistros.leerRegistros
+    events:
+      - http:
+          method: GET
+          path: "/api/personas"
+
+  swagger:
+    handler: swagger/swagger-html.handler
+    events:
+      - http:
+          method: GET
+          path: "/swagger"
+  swaggerjson:
+    handler: swagger/swagger-json.handler
+    events:
+      - http:
+          method: GET
+          path: "/swagger.json"
+
+resources:
+  Resources:
+    TaskTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Tabla1
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
