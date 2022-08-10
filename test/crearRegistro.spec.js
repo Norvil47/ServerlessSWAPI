@@ -8,7 +8,7 @@ describe("crearRegistro", () => {
                 id: 1,
             }),
         };
-        const res = await crearRegistro(event).then();
+        const res = await crearRegistro(event).then((res) => res);
         expect(res.statusCode).toBe(200);
     });
     test("no registrar personaje -error 404 Not Found ",()=>{
@@ -17,7 +17,7 @@ describe("crearRegistro", () => {
                 id: 1000,
             }),
         };
-        const res = await crearRegistro(event).then();
+        const res = await crearRegistro(event).then((res) => res);
         expect(res.statusCode).toBe(404);
     });
 
