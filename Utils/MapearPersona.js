@@ -12,6 +12,6 @@
   };
 };
 
-export {
+module.exports= {
     mapearPersona
 }
